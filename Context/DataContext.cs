@@ -14,6 +14,11 @@ namespace WAIGR_Users_Products.Context
         {
 
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Producto>().HasAlternateKey(p => p.SKU);
+            modelBuilder.Entity<User>().HasAlternateKey(u => u.Nombre);
+        }
         public DbSet<Producto> Productos => Set<Producto>();
 
         public DbSet<Venta> Ventas => Set<Venta>();
