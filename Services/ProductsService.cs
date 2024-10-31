@@ -9,7 +9,7 @@ using WAIGR_Users_Products.Entities;
 
 namespace WAIGR_Users_Products.Services
 {
-    public class ProductsService
+    public class ProductsService: IProductsService
     {
         public DataContext SqlContext { get; }
         public ProductsService(DataContext sqlContext)
@@ -53,5 +53,6 @@ namespace WAIGR_Users_Products.Services
             await SqlContext.SaveChangesAsync();
             return product;
         }
+
     }
 }

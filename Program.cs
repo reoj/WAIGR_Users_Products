@@ -36,6 +36,8 @@ builder.Services.AddSwaggerGen(cnfg =>
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IUsersService, UsersService>();
+builder.Services.AddScoped<IProductsService, ProductsService>();
+builder.Services.AddScoped<IVentasService, VentasService>();
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
