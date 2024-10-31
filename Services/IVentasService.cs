@@ -1,3 +1,4 @@
+using WAIGR_Users_Products.DTOs;
 using WAIGR_Users_Products.Entities;
 
 namespace WAIGR_Users_Products.Services
@@ -6,7 +7,7 @@ namespace WAIGR_Users_Products.Services
     {
         Task<Venta> GetVenta(Guid id);
         Task<List<Venta>> GetAllVentas();
-        Task<Venta> CreateVenta(Venta venta);
+        Task<Venta> CreateVenta(CreateVentaDTO venta);
         Task<Venta> UpdateVenta(Venta venta);
         Task<Venta> DeleteVenta(Guid id);
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using WAIGR_Users_Products.DTOs;
 using WAIGR_Users_Products.Entities;
 using WAIGR_Users_Products.Services;
 
@@ -33,7 +34,7 @@ namespace WAIGR_Users_Products.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> CreateVenta([FromBody] Venta venta)
+        public async Task<IActionResult> CreateVenta([FromBody] CreateVentaDTO venta)
         {
             var createdVenta = await VentasService.CreateVenta(venta);
             return createdVenta != null ? Ok(createdVenta) : BadRequest();

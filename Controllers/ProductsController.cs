@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Mvc;
+using WAIGR_Users_Products.DTOs;
 using WAIGR_Users_Products.Entities;
 using WAIGR_Users_Products.Services;
 
@@ -30,17 +31,17 @@ namespace WAIGR_Users_Products.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] Producto product)
+        public async Task<IActionResult> CreateProduct([FromBody] CreateProductDTO product)
         {
             var createdProduct = await ProductsService.CreateProduct(product);
             return createdProduct != null ? Ok(createdProduct) : BadRequest();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(Guid id, [FromBody] Producto product)
+        public async Task<IActionResult> UpdateProduct(Guid id, [FromBody] UpdateProductDTO product)
         {
 
-            var updatedProduct = await ProductsService.UpdateProduct(product);
+            var updatedProduct = await ProductsService.UpdateProduct(product, id);
             return updatedProduct != null ? Ok(updatedProduct) : BadRequest();
         }
         [HttpDelete("{id}")]

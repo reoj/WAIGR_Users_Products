@@ -31,24 +31,23 @@ namespace WAIGR_Users_Products.Services
             return userList is not null ? userList : throw new NullReferenceException();
         }
 
-        public async Task<User> CreateUser(User user)
+        public async Task<User> CreateUser(CreateUserDTO user)
         {
+            Guid newUserGuid = Guid.NewGuid();
             user.Contraseña = BCrypt.Net.BCrypt.HashPassword(user.Contraseña);
             var newUser = _mapper.Map<User>(user);
+            newUser.IdUsuario = newUserGuid;
             await SqlContext.Users.AddAsync(newUser);
             await SqlContext.SaveChangesAsync();
             return newUser;
         }
 
-        public async Task<User> UpdateUser(Guid id, User user)
+        public async Task<User> UpdateUser(Guid id, UpdateUserDTO user)
         {
-            var userToUpdate = await SqlContext.Users.FindAsync(id);
-            if (userToUpdate is null)
-            {
-                throw new KeyNotFoundException();
-            }
+            var userToUpdate = await SqlContext.Users.FindAsync(id) ?? throw new KeyNotFoundException();
             user.Contraseña = BCrypt.Net.BCrypt.HashPassword(user.Contraseña);
             _mapper.Map(user, userToUpdate);
+            userToUpdate.IdUsuario = id;
             SqlContext.Users.Update(userToUpdate);
             await SqlContext.SaveChangesAsync();
             return userToUpdate;
@@ -56,11 +55,7 @@ namespace WAIGR_Users_Products.Services
 
         public async Task<bool> DeleteUser(Guid id)
         {
-            var userToDelete = await SqlContext.Users.FindAsync(id);
-            if (userToDelete is null)
-            {
-                throw new KeyNotFoundException();
-            }
+            var userToDelete = await SqlContext.Users.FindAsync(id) ?? throw new KeyNotFoundException();
             SqlContext.Users.Remove(userToDelete);
             await SqlContext.SaveChangesAsync();
             return true;

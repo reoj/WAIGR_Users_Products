@@ -1,3 +1,4 @@
+using WAIGR_Users_Products.DTOs;
 using WAIGR_Users_Products.Entities;
 
 namespace WAIGR_Users_Products.Services
@@ -6,8 +7,8 @@ namespace WAIGR_Users_Products.Services
     {
         Task<Producto> GetProduct(Guid id);
         Task<List<Producto>> GetAllProducts();
-        Task<Producto> CreateProduct(Producto product);
-        Task<Producto> UpdateProduct(Producto product);
+        Task<Producto> CreateProduct(CreateProductDTO product);
+        Task<Producto> UpdateProduct(UpdateProductDTO product, Guid id);
         Task<Producto> DeleteProduct(Guid id);
 
     }

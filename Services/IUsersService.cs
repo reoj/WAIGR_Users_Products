@@ -9,8 +9,8 @@ namespace WAIGR_Users_Products.Services
     {
         Task<User> GetUserById(Guid id);
         Task<List<User>> GetAllUsers();
-        Task<User> CreateUser(User user);
-        Task<User> UpdateUser(Guid id, User user);
+        Task<User> CreateUser(CreateUserDTO user);
+        Task<User> UpdateUser(Guid id, UpdateUserDTO user);
         Task<bool> DeleteUser(Guid id);
 
 

@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
-namespace WAIGR_Users_Products.Entities
+namespace WAIGR_Users_Products.DTOs
 {
-    public class Producto
+    public class CreateProductDTO
     {
-        [Key]
-        public Guid IDproducto { get; set; }
         [Required]
         public required string SKU { get; set; }
         [Required]
@@ -24,6 +22,5 @@ namespace WAIGR_Users_Products.Entities
         public required string ClaveSAT { get; set; }
         [Required]
         public required string ClaveKey { get; set; }
-
     }
 }

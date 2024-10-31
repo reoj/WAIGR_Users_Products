@@ -1,4 +1,4 @@
-namespace WAIGR_Users_Products.Services
+namespace WAIGR_Users_Products.DTOs
 {
     public class UpdateUserDTO
     {

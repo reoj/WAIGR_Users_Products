@@ -1,14 +1,11 @@
+
 using System.ComponentModel.DataAnnotations;
 
-namespace WAIGR_Users_Products.Entities
+namespace WAIGR_Users_Products.DTOs
 {
-    public class Venta
+    public class CreateVentaDTO
     {
-        [Key]
-        public Guid IDVenta { get; set; }
-        [Required]
         public Guid IDUsuario { get; set; }
-        public User Usuario { get; set; }
         [Required]
         public int Cantidad { get; set; }
         [Required]

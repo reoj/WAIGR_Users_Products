@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using WAIGR_Users_Products.DTOs;
 using WAIGR_Users_Products.Entities;
 using WAIGR_Users_Products.Services;
 
@@ -33,16 +34,16 @@ namespace WAIGR_Users_Products.Controllers
 
 
         [HttpPost]
-        public IActionResult Post(User user)
+        public IActionResult Post([FromBody] CreateUserDTO user)
         {
             var result = _usersService.CreateUser(user);
             return result is not null ? Ok(result) : BadRequest();
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(Guid id)
+        public IActionResult Put(Guid id, [FromBody] UpdateUserDTO user)
         {
-            var result = _usersService.UpdateUser(id, new User());
+            var result = _usersService.UpdateUser(id, user);
             return result is not null ? Ok(result) : BadRequest();
         }
 
