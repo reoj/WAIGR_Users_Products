@@ -18,7 +18,7 @@ namespace WAIGR_Users_Products.Controllers
             this._usersService = usersService;
         }
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAll()
         {
             var result = await _usersService.GetAllUsers();
             return Ok(result);
@@ -31,12 +31,6 @@ namespace WAIGR_Users_Products.Controllers
             return result is not null ? Ok(result) : NotFound();
         }
 
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var result = _usersService.GetAllUsers();
-            return result is not null ? Ok(result) : NotFound();
-        }
 
         [HttpPost]
         public IActionResult Post(User user)
