@@ -11,10 +11,12 @@ namespace WAIGR_Users_Products.Entities
         [Key]
         public Guid IdUsuario { get; set; }
         [Required]
+        [MaxLength(50)]
         public string Nombre { get; set; }
         [Required]
         public string Contraseña { get; set; }
         [Required]
+        [MaxLength(50)]
         public string Usuario { get; set; }
     }
 }

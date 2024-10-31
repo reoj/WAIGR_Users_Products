@@ -10,10 +10,10 @@ namespace WAIGR_Users_Products.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class VentasApiController : ControllerBase
+    public class VentasController : ControllerBase
     {
         public IVentasService VentasService { get; }
-        public VentasApiController(IVentasService ventasService)
+        public VentasController(IVentasService ventasService)
         {
             this.VentasService = ventasService;
         }

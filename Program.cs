@@ -39,6 +39,8 @@ builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IProductsService, ProductsService>();
 builder.Services.AddScoped<IVentasService, VentasService>();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddControllers();
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -60,7 +62,6 @@ app.UseCors(builder => builder
      );
 
 app.UseAuthorization();
-
 app.MapControllers();
 
 

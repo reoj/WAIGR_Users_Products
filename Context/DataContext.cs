@@ -11,11 +11,16 @@ namespace WAIGR_Users_Products.Context
     public class DataContext : DbContext, IDataContext
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
-        { }
+        {
+
+        }
         public DbSet<Producto> Productos => Set<Producto>();
 
         public DbSet<Venta> Ventas => Set<Venta>();
 
         public DbSet<User> Users => Set<User>();
+
+        
     }
+
 }
