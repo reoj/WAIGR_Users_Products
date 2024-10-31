@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WAIGR_Users_Products.DTOs;
 using WAIGR_Users_Products.Entities;
@@ -10,6 +11,7 @@ using WAIGR_Users_Products.Services;
 namespace WAIGR_Users_Products.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public partial class UsersController : ControllerBase
     {
