@@ -6,6 +6,10 @@ using WAIGR_Users_Products.Controllers;
 using WAIGR_Users_Products.DTOs;
 using WAIGR_Users_Products.Entities;
 using BCrypt.Net;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace WAIGR_Users_Products.Services
 {
@@ -59,6 +63,35 @@ namespace WAIGR_Users_Products.Services
             SqlContext.Users.Remove(userToDelete);
             await SqlContext.SaveChangesAsync();
             return true;
+        }
+        private string GenerateJwtToken(User user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes("your_secret_key_here"); // Use the same key as in Program.cs
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                new Claim(ClaimTypes.Name, user.IdUsuario.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                Issuer = "your_issuer",
+                Audience = "your_audience",
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+        public async Task<string> Authenticate(string username, string password)
+        {
+            var user = await SqlContext.Users.SingleOrDefaultAsync(u => u.Nombre == username);
+
+            if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Contraseña))
+            {
+                throw new UnauthorizedAccessException("Username or password is incorrect");
+            }
+
+            return GenerateJwtToken(user);
         }
     }
 }

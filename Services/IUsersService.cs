@@ -12,7 +12,6 @@ namespace WAIGR_Users_Products.Services
         Task<User> CreateUser(CreateUserDTO user);
         Task<User> UpdateUser(Guid id, UpdateUserDTO user);
         Task<bool> DeleteUser(Guid id);
-
-
+        Task<string> Authenticate(string username, string password);
     }
 }
