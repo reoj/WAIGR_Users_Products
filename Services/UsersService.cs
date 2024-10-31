@@ -5,6 +5,7 @@ using WAIGR_Users_Products.Context;
 using WAIGR_Users_Products.Controllers;
 using WAIGR_Users_Products.DTOs;
 using WAIGR_Users_Products.Entities;
+using BCrypt.Net;
 
 namespace WAIGR_Users_Products.Services
 {
@@ -18,98 +19,51 @@ namespace WAIGR_Users_Products.Services
             this._mapper = mapper;
         }
 
-        public async Task<ServiceResponse<User>> CreateUser(CreateUserDTO nwUser)
+        public async Task<User> GetUserById(Guid id)
         {
-            return await ServiceHelper<User>.HandleAnActionInsideAServiceResponse(CreateUserFromDTO, nwUser);
-        }
-        public async Task<ServiceResponse<GetUserDTO>> GetUser(Guid id)
-        {
-            return await ServiceHelper<GetUserDTO>.HandleAnActionInsideAServiceResponse(ReadyUserForExport, id);
-        }
+            var user = await SqlContext.Users.FindAsync(id);
+            return user is not null ? user : throw new KeyNotFoundException();
 
-        public async Task<ServiceResponse<List<GetUserDTO>>> GetAllUsers()
+        }
+        public async Task<List<User>> GetAllUsers()
         {
-            return await ServiceHelper<List<GetUserDTO>>.HandleAnActionInsideAServiceResponse(() => GenerateReadableListOfUsers());
+            var userList = await SqlContext.Users.ToListAsync();
+            return userList is not null ? userList : throw new NullReferenceException();
         }
 
-
-        public Task<ServiceResponse<GetUserDTO>> UpdateUser(UpdateUserDTO nwUser)
+        public async Task<User> CreateUser(User user)
         {
-            throw new NotImplementedException();
+            user.Contraseña = BCrypt.Net.BCrypt.HashPassword(user.Contraseña);
+            var newUser = _mapper.Map<User>(user);
+            await SqlContext.Users.AddAsync(newUser);
+            await SqlContext.SaveChangesAsync();
+            return newUser;
         }
 
-
-        public async Task<User> GetUserFromDataRepo(Guid idetifier)
+        public async Task<User> UpdateUser(Guid id, User user)
         {
-            var requested = await SqlContext.Users.FindAsync(idetifier);
-            return ServiceHelper<User>.NoNullsAccepted(requested);
-        }
-        private async Task<GetUserDTO> ReadyUserForExport(object arg)
-        {
-            // Retrieve
-            var id = (Guid)arg;
-            var requested = await GetUserFromDataRepo(id);
-
-            // act: Generate the new User object 
-            GetUserDTO inCreation = new()
+            var userToUpdate = await SqlContext.Users.FindAsync(id);
+            if (userToUpdate is null)
             {
-                Nombre = requested.Nombre,
-                Usuario = requested.Usuario
-            };
-
-            // Return
-            return inCreation;
+                throw new KeyNotFoundException();
+            }
+            user.Contraseña = BCrypt.Net.BCrypt.HashPassword(user.Contraseña);
+            _mapper.Map(user, userToUpdate);
+            SqlContext.Users.Update(userToUpdate);
+            await SqlContext.SaveChangesAsync();
+            return userToUpdate;
         }
-        private async Task<User> CreateUserFromDTO(object obj)
-        {
-            // Retrieve
-            var creationInformation = (CreateUserDTO)obj;
 
-            // act: Generate the new User object 
-            User inCreation = new()
+        public async Task<bool> DeleteUser(Guid id)
+        {
+            var userToDelete = await SqlContext.Users.FindAsync(id);
+            if (userToDelete is null)
             {
-                Nombre = creationInformation.Nombre,
-                Contraseña = creationInformation.Contraseña,
-                Usuario = creationInformation.Usuario
-            };
-            var added = await SqlContext.Users.AddAsync(inCreation);
-
-            // Save in Repository 
-            _ = await SqlContext.SaveChangesAsync();
-
-            // Return
-            return ServiceHelper<User>.NoNullsAccepted(added.Entity);
-        }
-        private async Task<List<GetUserDTO>> GenerateReadableListOfUsers()
-        {
-            List<User> listOfUsers = await GetListOfAllUsersFromDataRepository();
-            List<GetUserDTO> listofUserDTOs = GenerateListofUserDTOFromUsers(listOfUsers);
-            return listofUserDTOs;
-        }
-        private List<GetUserDTO> GenerateListofUserDTOFromUsers(List<User> listOfUsers)
-        {
-            var listofUserDTOs = new List<GetUserDTO>();
-
-            listOfUsers.ForEach(currentUser => listofUserDTOs
-                .Add(_mapper.Map<GetUserDTO>(currentUser)));
-            return listofUserDTOs;
-        }
-
-        private async Task<List<User>> GetListOfAllUsersFromDataRepository()
-        {
-            return await SqlContext.Users.ToListAsync<User>();
-        }
-
-
-        private async Task<User> GetUserFromDataRepo(object arg)
-        {
-            var requested = await SqlContext.Users.FindAsync(arg);
-            return ServiceHelper<User>.NoNullsAccepted(requested);
-        }
-
-        public Task<ServiceResponse<GetUserDTO>> DeleteUser(Guid id)
-        {
-            throw new NotImplementedException();
+                throw new KeyNotFoundException();
+            }
+            SqlContext.Users.Remove(userToDelete);
+            await SqlContext.SaveChangesAsync();
+            return true;
         }
     }
 }

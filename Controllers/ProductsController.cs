@@ -43,6 +43,11 @@ namespace WAIGR_Users_Products.Controllers
             var updatedProduct = await ProductsService.UpdateProduct(product);
             return updatedProduct != null ? Ok(updatedProduct) : BadRequest();
         }
-
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProduct(Guid id)
+        {
+            var deletedProduct = await ProductsService.DeleteProduct(id);
+            return deletedProduct != null ? Ok(deletedProduct) : BadRequest();
+        }
     }
 }

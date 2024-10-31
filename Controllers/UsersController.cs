@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using WAIGR_Users_Products.Entities;
 using WAIGR_Users_Products.Services;
 
 namespace WAIGR_Users_Products.Controllers
@@ -24,27 +25,38 @@ namespace WAIGR_Users_Products.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult Get(Guid id)
         {
-            return Ok($"Get User {id}");
+            var result = _usersService.GetUserById(id);
+            return result is not null ? Ok(result) : NotFound();
+        }
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var result = _usersService.GetAllUsers();
+            return result is not null ? Ok(result) : NotFound();
         }
 
         [HttpPost]
-        public IActionResult Post()
+        public IActionResult Post(User user)
         {
-            return Ok("Post User");
+            var result = _usersService.CreateUser(user);
+            return result is not null ? Ok(result) : BadRequest();
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id)
+        public IActionResult Put(Guid id)
         {
-            return Ok($"Put User {id}");
+            var result = _usersService.UpdateUser(id, new User());
+            return result is not null ? Ok(result) : BadRequest();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(Guid id)
         {
-            return Ok($"Delete User {id}");
+            var result = _usersService.DeleteUser(id);
+            return result is not null ? Ok() : BadRequest();
         }
     }
 }

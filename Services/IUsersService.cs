@@ -7,11 +7,12 @@ namespace WAIGR_Users_Products.Services
 
     public interface IUsersService
     {
-        Task<ServiceResponse<User>> CreateUser(CreateUserDTO nwUser);
-        Task<ServiceResponse<GetUserDTO>> GetUser(Guid id);
-        Task<ServiceResponse<List<GetUserDTO>>> GetAllUsers();
-        Task<ServiceResponse<GetUserDTO>> UpdateUser(UpdateUserDTO nwUser);
-        Task<ServiceResponse<GetUserDTO>> DeleteUser(Guid id);
-        Task<User> GetUserFromDataRepo(Guid idn);
+        Task<User> GetUserById(Guid id);
+        Task<List<User>> GetAllUsers();
+        Task<User> CreateUser(User user);
+        Task<User> UpdateUser(Guid id, User user);
+        Task<bool> DeleteUser(Guid id);
+
+
     }
 }
