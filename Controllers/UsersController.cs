@@ -3,17 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using WAIGR_Users_Products.Services;
 
 namespace WAIGR_Users_Products.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    public partial class UsersController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult Get()
+        private readonly IUsersService _usersService;
+        public UsersController(IUsersService usersService)
         {
-            return Ok("Get Users");
+            this._usersService = usersService;
+        }
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var result = await _usersService.GetAllUsers();
+            return Ok(result);
         }
 
         [HttpGet("{id}")]

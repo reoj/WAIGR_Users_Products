@@ -11,17 +11,17 @@ namespace WAIGR_Users_Products.Entities
         [Key]
         public Guid IDproducto { get; set; }  
         [Required]  
-        public string SKU { get; set; } 
+        public required string SKU { get; set; } 
         [Required] 
-        public string Nombre { get; set; }
+        public required string Nombre { get; set; }
         [Required]
         public float Costo { get; set; }
         [Required]
         public float PrecioVenta { get; set; }
         [Required]
-        public string ClaveSAT { get; set; }
+        public required string ClaveSAT { get; set; }
         [Required]
-        public string ClaveKey { get; set; }
+        public required string ClaveKey { get; set; }
 
     }
 }

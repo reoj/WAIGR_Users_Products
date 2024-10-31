@@ -2,6 +2,7 @@
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using WAIGR_Users_Products.Context;
+using WAIGR_Users_Products.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,7 +34,13 @@ builder.Services.AddSwaggerGen(cnfg =>
     }
     );
 
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddScoped<IUsersService, UsersService>();
+builder.Services.AddEndpointsApiExplorer();
+
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -43,7 +50,16 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors(builder => builder
+     .AllowAnyOrigin()
+     .AllowAnyMethod()
+     .AllowAnyHeader()
+     //.AllowCredentials()
+     );
 
+app.UseAuthorization();
+
+app.MapControllers();
 
 
 app.Run();

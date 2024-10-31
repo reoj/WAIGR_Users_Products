@@ -12,10 +12,10 @@ namespace WAIGR_Users_Products.Context
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         { }
-        public DbSet<Producto> Productos => throw new NotImplementedException();
+        public DbSet<Producto> Productos => Set<Producto>();
 
-        public DbSet<Venta> Ventas => throw new NotImplementedException();
+        public DbSet<Venta> Ventas => Set<Venta>();
 
-        public DbSet<User> Users => throw new NotImplementedException();
+        public DbSet<User> Users => Set<User>();
     }
 }
