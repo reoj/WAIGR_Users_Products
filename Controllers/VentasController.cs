@@ -41,9 +41,9 @@ namespace WAIGR_Users_Products.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateVenta(Guid id, [FromBody] Venta venta)
+        public async Task<IActionResult> UpdateVenta(Guid id, [FromBody] UpdateVentaDTO venta)
         {
-            var updatedVenta = await VentasService.UpdateVenta(venta);
+            var updatedVenta = await VentasService.UpdateVenta(venta, id);
             return updatedVenta != null ? Ok(updatedVenta) : BadRequest();
         }
         

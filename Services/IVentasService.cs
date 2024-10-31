@@ -8,7 +8,7 @@ namespace WAIGR_Users_Products.Services
         Task<Venta> GetVenta(Guid id);
         Task<List<Venta>> GetAllVentas();
         Task<Venta> CreateVenta(CreateVentaDTO venta);
-        Task<Venta> UpdateVenta(Venta venta);
+        Task<Venta> UpdateVenta(UpdateVentaDTO venta, Guid id);
         Task<Venta> DeleteVenta(Guid id);
     }
 }

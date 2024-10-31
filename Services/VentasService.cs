@@ -39,12 +39,16 @@ namespace WAIGR_Users_Products.Services
             await SqlContext.SaveChangesAsync();
             return nuevaVenta;
         }
-        public async Task<Venta> UpdateVenta(Venta venta)
+        public async Task<Venta> UpdateVenta(UpdateVentaDTO venta, Guid id)
         {
-            SqlContext.Ventas.Update(venta);
-            venta.Usuario = await usersService.GetUserById(venta.IDUsuario);
+            var ventaToUpdate = await SqlContext.Ventas.FindAsync(id)?? throw new KeyNotFoundException("Venta not found");
+            var newVenta = mapper.Map<Venta>(venta);
+            newVenta.IDVenta = id;
+            newVenta.Usuario = await usersService.GetUserById(venta.IDUsuario);
+            SqlContext.Entry(ventaToUpdate).CurrentValues.SetValues(newVenta);
+            
             await SqlContext.SaveChangesAsync();
-            return venta;
+            return newVenta;
         }
         public async Task<Venta> DeleteVenta(Guid id)
         {
